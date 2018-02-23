@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gadgetmedia.newssuite.util.ScrollChildSwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/refresh_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.newslist.NewsListFragment">
+
+        <com.gadgetmedia.newssuite.util.EmptyStateRecyclerView
+            android:id="@+id/list"
+            android:name="com.gadgetmedia.newssuite.ui.newslist.ItemFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:context="com.gadgetmedia.newssuite.ui.newslist.ItemFragment"
+            tools:listitem="@layout/newslist_item" />
+
+        <TextView
+            android:id="@android:id/empty"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/empty_list" />
+
+    </LinearLayout>
+
+
+</com.gadgetmedia.newssuite.util.ScrollChildSwipeRefreshLayout>

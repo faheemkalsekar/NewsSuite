@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">News Suite</string>
+    <string name="empty_list">You have no News</string>
+    <string name="news_image">News Image</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.gadgetmedia.newssuite.data;
+package com.gadgetmedia.newssuite.data.db;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -13,37 +13,39 @@ public final class News {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private final long mId;
+    private long mId;
 
     @Nullable
     @ColumnInfo(name = "title")
-    private final String mTitle;
+    private String mTitle;
 
     @Nullable
     @ColumnInfo(name = "description")
-    private final String mDescription;
+    private String mDescription;
 
     @Nullable
     @ColumnInfo(name = "imageHref")
-    private final String mImageHref;
+    private String mImageHref;
 
     @ColumnInfo(name = "completed")
-    private final boolean mCompleted;
+    private boolean mCompleted;
+
+    @ColumnInfo(name = "category")
+    private String mCategory;
 
 
     /**
      * Constructor to specify a News Item
      *
-     * @param id          id of the task
      * @param title       title of the News
      * @param description description of the News
      * @param imageHref   image to be downloaded
      * @param completed   true if the News is read, false if it's not
      */
 
-    public News(long id, @Nullable String title, @Nullable String description,
+    public News(@Nullable String title, @Nullable String description,
                 @Nullable String imageHref, boolean completed) {
-        mId = id;
+
         mTitle = title;
         mDescription = description;
         mImageHref = imageHref;
@@ -54,9 +56,17 @@ public final class News {
         return mId;
     }
 
+    public void setId(final long mId) {
+        this.mId = mId;
+    }
+
     @Nullable
     public String getTitle() {
         return mTitle;
+    }
+
+    public void setTitle(@Nullable final String mTitle) {
+        this.mTitle = mTitle;
     }
 
     @Nullable
@@ -64,13 +74,33 @@ public final class News {
         return mDescription;
     }
 
+    public void setDescription(@Nullable String mDescription) {
+        this.mDescription = mDescription;
+    }
+
     @Nullable
     public String getImageHref() {
         return mImageHref;
     }
 
+    public void setImageHref(@Nullable String mImageHref) {
+        this.mImageHref = mImageHref;
+    }
 
     public boolean isCompleted() {
         return mCompleted;
+    }
+
+    public void setCompleted(final boolean mCompleted) {
+        this.mCompleted = mCompleted;
+    }
+
+
+    public String getCategory() {
+        return mCategory;
+    }
+
+    public void setCategory(String mCategory) {
+        this.mCategory = mCategory;
     }
 }

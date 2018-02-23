@@ -34,6 +34,21 @@ public class FakeNewsRemoteDataSource implements NewsDataSource {
         callback.onNewsLoaded(newsItem);
     }
 
+    @Override
+    public void refreshNews() {
+
+    }
+
+    @Override
+    public void deleteAllNews() {
+
+    }
+
+    @Override
+    public void saveNews(@NonNull News news) {
+
+    }
+
     @VisibleForTesting
     public void addTasks(News... news) {
         for (News newsItem : news) {

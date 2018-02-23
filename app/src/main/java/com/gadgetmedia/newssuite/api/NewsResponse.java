@@ -1,28 +1,35 @@
 package com.gadgetmedia.newssuite.api;
 
-import com.gadgetmedia.newssuite.data.News;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 /**
  * POJO to hold News responses.
  */
 public class NewsResponse {
+
     @SerializedName("title")
-    private String mTitle;
+    private String title;
     @SerializedName("rows")
-    private List<News> mNewsItems;
+    private Rows[] rows;
 
     public String getTitle() {
-        return mTitle;
+        return title;
     }
 
-    public List<News> getNewsItems() {
-        return mNewsItems;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public void setNewsItems(List<News> mNewsItems) {
-        this.mNewsItems = mNewsItems;
+    public Rows[] getRows() {
+        return rows;
+    }
+
+    public void setRows(Rows[] rows) {
+        this.rows = rows;
+    }
+
+    @Override
+    public String toString() {
+        return "NewsResponse [title = " + title + ", rows = " + rows + "]";
     }
 }

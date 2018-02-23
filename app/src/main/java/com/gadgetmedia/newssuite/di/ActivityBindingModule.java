@@ -1,7 +1,7 @@
 package com.gadgetmedia.newssuite.di;
 
 import com.gadgetmedia.newssuite.ui.newslist.NewsListActivity;
-import com.gadgetmedia.newssuite.ui.newslist.NewsListModule;
+import com.gadgetmedia.newssuite.ui.newslist.NewsListPresenterModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,6 +18,6 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class ActivityBindingModule {
     @ActivityScoped
-    @ContributesAndroidInjector(modules = NewsListModule.class)
+    @ContributesAndroidInjector(modules = NewsListPresenterModule.class)
     abstract NewsListActivity newsListActivity();
 }
