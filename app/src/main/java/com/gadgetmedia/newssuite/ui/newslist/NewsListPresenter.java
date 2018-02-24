@@ -66,7 +66,8 @@ final class NewsListPresenter implements NewsListContract.Presenter {
 
         // The network request might be handled in a different thread so make sure Espresso knows
         // that the app is busy until the response is handled.
-        EspressoIdlingResource.increment(); // App is busy until further notice
+        // App is busy until further notice
+        EspressoIdlingResource.increment();
 
         mNewsRepository.getNews(new NewsDataSource.LoadNewsCallback() {
 
@@ -97,8 +98,11 @@ final class NewsListPresenter implements NewsListContract.Presenter {
             @Override
             public void onDataNotAvailable() {
                 // The view may not be able to handle UI updates anymore
-                if (!mNewsListView.isActive()) {
+                if (mNewsListView == null || !mNewsListView.isActive()) {
                     return;
+                }
+                if (showLoadingUI) {
+                    mNewsListView.setLoadingIndicator(false);
                 }
                 mNewsListView.showLoadingNewsError();
             }

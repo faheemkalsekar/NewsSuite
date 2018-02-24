@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,8 +35,6 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
 
     @Inject
     NewsListContract.Presenter mPresenter;
-    @Inject
-    Picasso picasso;
 
     OnHeadlineChangedListener mCallback;
 
@@ -68,7 +67,7 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.setHasFixedSize(true);
-        mAdapter = new NewsItemRecyclerViewAdapter(new ArrayList<News>(), mListener, picasso);
+        mAdapter = new NewsItemRecyclerViewAdapter(Picasso.with(context),new ArrayList<News>(), mListener);
         recyclerView.setAdapter(mAdapter);
 
         // Set up progress indicator
@@ -136,7 +135,7 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
     }
 
     @Override
-    public void setLoadingIndicator(boolean active) {
+    public void setLoadingIndicator(final boolean active) {
         if (getView() == null) {
             return;
         }
@@ -164,7 +163,7 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
 
     @Override
     public void showNoNews() {
-
+    // Handled by EmptyStateRecycler view
     }
 
     @Override
@@ -178,9 +177,11 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
 
     @Override
     public void showLoadingNewsError() {
-
+        showMessage(getString(R.string.loading_news_error));
     }
-
+    private void showMessage(final String message) {
+        Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
+    }
     // News Activity must implement this interface
     public interface OnHeadlineChangedListener {
         public void onShowNewsLabel(final String label);

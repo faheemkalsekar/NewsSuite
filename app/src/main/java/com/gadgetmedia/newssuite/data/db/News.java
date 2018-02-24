@@ -33,6 +33,8 @@ public final class News {
     @ColumnInfo(name = "category")
     private String mCategory;
 
+    public News() {
+    }
 
     /**
      * Constructor to specify a News Item

@@ -3,11 +3,12 @@ package com.gadgetmedia.newssuite.data;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import com.gadgetmedia.newssuite.data.db.News;
+import com.gadgetmedia.newssuite.data.db.Title;
 import com.gadgetmedia.newssuite.data.source.NewsDataSource;
-import com.google.common.collect.Lists;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -17,21 +18,25 @@ import javax.inject.Inject;
 
 public class FakeNewsRemoteDataSource implements NewsDataSource {
 
-    private static final Map<Long, News> NEWS_SERVICE_DATA = new LinkedHashMap<>();
-
     @Inject
     public FakeNewsRemoteDataSource() {
     }
 
     @Override
     public void getNews(@NonNull LoadNewsCallback callback) {
-        callback.onNewsLoaded(Lists.newArrayList(NEWS_SERVICE_DATA.values()));
+        List<News> newsList = new ArrayList<>();
+        News news1 = new News("Beavers", "Warmer than you might think.", "http://icons.iconarchive.com/icons/iconshock/alaska/256/Igloo-icon.png", false);
+        News news2 = new News("Avril", "Warmer than you might think.", "http://icons.iconarchive.com/icons/iconshock/alaska/256/Igloo-icon.png", false);
+
+        newsList.add(news1);
+        newsList.add(news2);
+        Title title = new Title("About Canada", newsList);
+        callback.onNewsLoaded(title);
     }
 
     @Override
     public void getNewsItem(@NonNull String newsId, @NonNull GetNewsCallback callback) {
-        News newsItem = NEWS_SERVICE_DATA.get(newsId);
-        callback.onNewsLoaded(newsItem);
+
     }
 
     @Override
@@ -45,14 +50,12 @@ public class FakeNewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void saveNews(@NonNull News news) {
+    public void saveNews(Title title) {
 
     }
 
     @VisibleForTesting
     public void addTasks(News... news) {
-        for (News newsItem : news) {
-            NEWS_SERVICE_DATA.put(newsItem.getId(), newsItem);
-        }
+
     }
 }

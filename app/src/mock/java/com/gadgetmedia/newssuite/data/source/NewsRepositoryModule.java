@@ -4,9 +4,9 @@ import android.app.Application;
 import android.arch.persistence.room.Room;
 
 import com.gadgetmedia.newssuite.data.FakeNewsRemoteDataSource;
-import com.gadgetmedia.newssuite.data.source.local.NewsDao;
 import com.gadgetmedia.newssuite.data.source.local.NewsDatabase;
 import com.gadgetmedia.newssuite.data.source.local.NewsLocalDataSource;
+import com.gadgetmedia.newssuite.data.source.local.NewsWithTitleDao;
 import com.gadgetmedia.newssuite.util.AppExecutors;
 import com.gadgetmedia.newssuite.util.DiskIOThreadExecutor;
 
@@ -35,8 +35,8 @@ abstract public class NewsRepositoryModule {
 
     @Singleton
     @Provides
-    static NewsDao provideTasksDao(NewsDatabase db) {
-        return db.newsDao();
+    static NewsWithTitleDao provideTasksDao(NewsDatabase db) {
+        return db.newsWithTitleDao();
     }
 
     @Singleton

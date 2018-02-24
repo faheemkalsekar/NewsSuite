@@ -24,15 +24,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class NewsItemRecyclerViewAdapter extends RecyclerView.Adapter<NewsItemRecyclerViewAdapter.ViewHolder> {
 
     private final OnListFragmentInteractionListener mListener;
+    private final Picasso mPicasso;
     private List<News> mValues;
-    Picasso picasso;
 
-    public NewsItemRecyclerViewAdapter(final List<News> items,
-                                       final OnListFragmentInteractionListener listener,
-                                       final Picasso picassoInit) {
+    public NewsItemRecyclerViewAdapter(Picasso with, final List<News> items,
+                                       final OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-        picasso = picassoInit;
+        mPicasso = with;
     }
 
     @Override
@@ -48,9 +47,11 @@ public class NewsItemRecyclerViewAdapter extends RecyclerView.Adapter<NewsItemRe
         holder.mTitleView.setText(holder.mItem.getTitle());
         holder.mDescView.setText(holder.mItem.getDescription());
 
-//        // Resize to the width specified maintaining aspect ratio
-        picasso.load(holder.mItem.getImageHref()).
-                resize(240, 0).into(holder.mImageView);
+        // Resize to the width specified maintaining aspect ratio
+        mPicasso.load(holder.mItem.getImageHref())
+                .resize(240,0).
+                into(holder.mImageView);
+
 
     }
 

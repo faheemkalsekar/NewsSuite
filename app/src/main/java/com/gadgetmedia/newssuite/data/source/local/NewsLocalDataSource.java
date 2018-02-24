@@ -33,7 +33,7 @@ public class NewsLocalDataSource implements NewsDataSource {
      * or the table is empty.
      */
     @Override
-    public void getNews(@NonNull LoadNewsCallback callback) {
+    public void getNews(@NonNull final LoadNewsCallback callback) {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {

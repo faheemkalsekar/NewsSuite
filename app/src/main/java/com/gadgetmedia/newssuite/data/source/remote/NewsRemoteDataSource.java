@@ -36,7 +36,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
     }
 
     @Override
-    public void getNews(@NonNull LoadNewsCallback callback) {
+    public void getNews(@NonNull final LoadNewsCallback callback) {
 
         mNewsService.getNews().enqueue(new Callback<NewsResponse>() {
             @Override

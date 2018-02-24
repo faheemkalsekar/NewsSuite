@@ -2,4 +2,5 @@
     <string name="app_name">News Suite</string>
     <string name="empty_list">You have no News</string>
     <string name="news_image">News Image</string>
+    <string name="loading_news_error">Error while loading News</string>
 </resources>

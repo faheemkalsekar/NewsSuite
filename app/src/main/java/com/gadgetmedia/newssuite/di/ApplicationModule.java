@@ -8,7 +8,6 @@ import com.gadgetmedia.newssuite.api.NewsService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.UUID;
@@ -21,7 +20,6 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -46,9 +44,6 @@ public abstract class ApplicationModule {
     @Provides
     @Singleton
     static OkHttpClient provideOkHttpClient(final Application application) {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
         File cacheDir = new File(application.getCacheDir(), UUID.randomUUID().toString());
         // 10 MiB cache
         Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
@@ -58,7 +53,6 @@ public abstract class ApplicationModule {
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(60, TimeUnit.SECONDS)
                 .writeTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(interceptor)
                 .build();
     }
 
@@ -72,16 +66,6 @@ public abstract class ApplicationModule {
                 .build()
                 .create(NewsService.class);
     }
-
-
-    @Provides
-    @Singleton
-    static Picasso picasso(final Application application) {
-
-        return new Picasso.Builder(application)
-                .build();
-    }
-
 
     //expose Application as an injectable context
     @Binds
