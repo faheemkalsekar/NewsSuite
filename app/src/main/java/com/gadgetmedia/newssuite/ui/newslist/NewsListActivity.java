@@ -1,10 +1,10 @@
 package com.gadgetmedia.newssuite.ui.newslist;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 
 import com.gadgetmedia.newssuite.R;
+import com.gadgetmedia.newssuite.data.db.News;
 import com.gadgetmedia.newssuite.util.ActivityUtils;
 
 import javax.inject.Inject;
@@ -12,13 +12,14 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 
-import static com.gadgetmedia.newssuite.ui.newslist.NewsListFragment.*;
+import static com.gadgetmedia.newssuite.ui.newslist.NewsListFragment.OnHeadlineChangedListener;
+import static com.gadgetmedia.newssuite.ui.newslist.NewsListFragment.OnListFragmentInteractionListener;
 
 
 /**
  * Displays News List Screen.
  */
-public class NewsListActivity extends DaggerAppCompatActivity implements OnHeadlineChangedListener {
+public class NewsListActivity extends DaggerAppCompatActivity implements OnHeadlineChangedListener, OnListFragmentInteractionListener {
 
     @Inject
     Lazy<NewsListFragment> newsFragmentProvider;
@@ -33,9 +34,6 @@ public class NewsListActivity extends DaggerAppCompatActivity implements OnHeadl
         // Set up the toolbar.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-//        ActionBar ab = getSupportActionBar();
-//        ab.setDisplayHomeAsUpEnabled(true);
-//        ab.setDisplayShowHomeEnabled(true);
 
         NewsListFragment newsListFragment = (NewsListFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
@@ -56,5 +54,10 @@ public class NewsListActivity extends DaggerAppCompatActivity implements OnHeadl
     @Override
     public void onShowNewsLabel(final String label) {
         setTitle(label);
+    }
+
+    @Override
+    public void onListFragmentInteraction(final News news) {
+
     }
 }

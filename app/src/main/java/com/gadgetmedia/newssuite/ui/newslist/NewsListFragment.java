@@ -15,10 +15,11 @@ import android.view.ViewGroup;
 import com.gadgetmedia.newssuite.R;
 import com.gadgetmedia.newssuite.data.db.News;
 import com.gadgetmedia.newssuite.di.ActivityScoped;
-import com.gadgetmedia.newssuite.ui.newslist.dummy.DummyContent;
 import com.gadgetmedia.newssuite.util.EmptyStateRecyclerView;
 import com.gadgetmedia.newssuite.util.ScrollChildSwipeRefreshLayout;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -33,8 +34,13 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
 
     @Inject
     NewsListContract.Presenter mPresenter;
+    @Inject
+    Picasso picasso;
 
     OnHeadlineChangedListener mCallback;
+
+    private OnListFragmentInteractionListener mListener;
+    private NewsItemRecyclerViewAdapter mAdapter;
 
     @Inject
     public NewsListFragment() {
@@ -44,11 +50,16 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Retain this fragment across configuration changes.
+        setRetainInstance(true);
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.newslist_frag, container, false);
 
         // Set the adapter
@@ -57,15 +68,16 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setEmptyView(view.findViewById(android.R.id.empty));
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new MyItemRecyclerViewAdapter(DummyContent.ITEMS, null));
+        mAdapter = new NewsItemRecyclerViewAdapter(new ArrayList<News>(), mListener, picasso);
+        recyclerView.setAdapter(mAdapter);
 
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
                 view.findViewById(R.id.refresh_layout);
         swipeRefreshLayout.setColorSchemeColors(
-                ContextCompat.getColor(getActivity(), R.color.colorPrimary),
-                ContextCompat.getColor(getActivity(), R.color.colorAccent),
-                ContextCompat.getColor(getActivity(), R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorAccent),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
         );
         // Set the scrolling view in the custom SwipeRefreshLayout.
         swipeRefreshLayout.setScrollUpChild(recyclerView);
@@ -73,7 +85,7 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPresenter.loadNews(false);
+                mPresenter.loadNews(true);
             }
         });
 
@@ -93,6 +105,14 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
             throw new ClassCastException(activity.toString()
                     + " must implement OnHeadlineSelectedListener");
         }
+
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+
     }
 
 
@@ -107,6 +127,12 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
         //prevent leaking activity in case presenter is orchestrating a long running task
         super.onDestroy();
         mPresenter.dropView();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallback = null;
     }
 
     @Override
@@ -133,7 +159,7 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
 
     @Override
     public void showNewsList(final List<News> newsList) {
-
+        mAdapter.replaceData(newsList);
     }
 
     @Override
@@ -160,5 +186,8 @@ public class NewsListFragment extends DaggerFragment implements NewsListContract
         public void onShowNewsLabel(final String label);
     }
 
+    public interface OnListFragmentInteractionListener {
+        void onListFragmentInteraction(final News news);
+    }
 
 }

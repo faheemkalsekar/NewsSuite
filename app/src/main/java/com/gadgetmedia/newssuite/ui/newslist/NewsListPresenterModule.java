@@ -20,5 +20,5 @@ public abstract class NewsListPresenterModule {
 
     @ActivityScoped
     @Binds
-    abstract NewsListContract.Presenter newsListPresenter(NewsListPresenter presenter);
+    abstract NewsListContract.Presenter newsListPresenter(final NewsListPresenter presenter);
 }

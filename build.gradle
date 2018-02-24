@@ -52,4 +52,7 @@ ext {
     retrofitVersion = "2.3.0"
     okhttpVersion = "3.9.0"
     gsonVersion = "2.8.0"
+    picassoVersion = "2.5.2"
+    uilVersion = "1.9.5"
+
 }

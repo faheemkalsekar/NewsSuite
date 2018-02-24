@@ -39,7 +39,7 @@ final class NewsListPresenter implements NewsListContract.Presenter {
      * with {@code @Nullable} values.
      */
     @Inject
-    NewsListPresenter(NewsRepository newsRepository) {
+    NewsListPresenter(final NewsRepository newsRepository) {
         mNewsRepository = newsRepository;
     }
 
@@ -134,7 +134,7 @@ final class NewsListPresenter implements NewsListContract.Presenter {
     }
 
     @Override
-    public void takeView(NewsListContract.View view) {
+    public void takeView(final NewsListContract.View view) {
         mNewsListView = view;
         loadNews(false);
     }

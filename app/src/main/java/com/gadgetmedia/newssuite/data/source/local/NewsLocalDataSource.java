@@ -2,13 +2,9 @@ package com.gadgetmedia.newssuite.data.source.local;
 
 import android.support.annotation.NonNull;
 
-import com.gadgetmedia.newssuite.api.NewsResponse;
-import com.gadgetmedia.newssuite.data.db.News;
 import com.gadgetmedia.newssuite.data.db.Title;
 import com.gadgetmedia.newssuite.data.source.NewsDataSource;
 import com.gadgetmedia.newssuite.util.AppExecutors;
-
-import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -31,6 +27,7 @@ public class NewsLocalDataSource implements NewsDataSource {
         mNewsDao = newsDao;
         mAppExecutors = executors;
     }
+
     /**
      * Note: {@link LoadNewsCallback#onDataNotAvailable()} is fired if the database doesn't exist
      * or the table is empty.
@@ -40,15 +37,15 @@ public class NewsLocalDataSource implements NewsDataSource {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                final List<News> tasks = mNewsDao.getNews();
+                final Title title = mNewsDao.getTitleWithNews();
                 mAppExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        if (tasks.isEmpty()) {
+                        if (title == null) {
                             // This will be called if the table is new or just empty.
                             callback.onDataNotAvailable();
                         } else {
-//                            callback.onNewsLoaded(tasks);
+                            callback.onNewsLoaded(title);
                         }
                     }
                 });
@@ -65,11 +62,21 @@ public class NewsLocalDataSource implements NewsDataSource {
 
     @Override
     public void refreshNews() {
-
+        // Not required because the {@link NewsRepository} handles the logic of refreshing the
+        // tasks from all the available data sources.
     }
 
     @Override
     public void deleteAllNews() {
+        Runnable deleteRunnable = new Runnable() {
+            @Override
+            public void run() {
+                mNewsDao.deleteAllNews();
+                mNewsDao.deleteAllTitle();
+            }
+        };
+
+        mAppExecutors.diskIO().execute(deleteRunnable);
 
     }
 

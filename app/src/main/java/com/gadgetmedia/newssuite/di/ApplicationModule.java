@@ -8,6 +8,7 @@ import com.gadgetmedia.newssuite.api.NewsService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.UUID;
@@ -35,10 +36,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public abstract class ApplicationModule {
-    //expose Application as an injectable context
-    @Binds
-    abstract Context bindContext(Application application);
-
     @Provides
     @Singleton
     static Gson provideGson() {
@@ -48,7 +45,7 @@ public abstract class ApplicationModule {
 
     @Provides
     @Singleton
-    static OkHttpClient provideOkHttpClient(Application application) {
+    static OkHttpClient provideOkHttpClient(final Application application) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
@@ -67,7 +64,7 @@ public abstract class ApplicationModule {
 
     @Provides
     @Singleton
-    static NewsService provideNewsService(Gson gson, OkHttpClient okHttpClient) {
+    static NewsService provideNewsService(final Gson gson, final OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -75,5 +72,19 @@ public abstract class ApplicationModule {
                 .build()
                 .create(NewsService.class);
     }
+
+
+    @Provides
+    @Singleton
+    static Picasso picasso(final Application application) {
+
+        return new Picasso.Builder(application)
+                .build();
+    }
+
+
+    //expose Application as an injectable context
+    @Binds
+    abstract Context bindContext(final Application application);
 }
 

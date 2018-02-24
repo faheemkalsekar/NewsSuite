@@ -2,15 +2,12 @@ package com.gadgetmedia.newssuite.data.source.local;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.gadgetmedia.newssuite.api.NewsResponse;
-import com.gadgetmedia.newssuite.api.Rows;
 import com.gadgetmedia.newssuite.data.db.News;
 import com.gadgetmedia.newssuite.data.db.Title;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,11 +32,11 @@ public abstract class NewsWithTitleDao {
     @Query("SELECT * FROM NEWS WHERE id = :newsId")
     public abstract News getNewsById(String newsId);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void _insertNewsTitle(final Title newsTitle);
 
     @Insert
-    public abstract void _insertNewsList(final List<News> pets);
+    public abstract void _insertNewsList(final List<News> newsList);
 
     @Query("SELECT * FROM TITLE")
     public abstract Title getNewsTitle();
@@ -57,10 +54,23 @@ public abstract class NewsWithTitleDao {
     }
 
     public Title getTitleWithNews() {
-        Title title = getNewsTitle();
-        List<News> newsList = getNewsList(title.getTitle());
-        title.setNews(newsList);
+        final Title title = getNewsTitle();
+        if (title != null) {
+            List<News> newsList = getNewsList(title.getTitle());
+            title.setNews(newsList);
+        }
         return title;
     }
 
+    /**
+     * Delete all News.
+     */
+    @Query("DELETE FROM NEWS")
+    public abstract void deleteAllNews();
+
+    /**
+     * Delete all Title.
+     */
+    @Query("DELETE FROM title")
+    public abstract void deleteAllTitle();
 }

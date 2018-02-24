@@ -152,12 +152,18 @@ public class NewsRepository implements NewsDataSource {
 
     @Override
     public void refreshNews() {
-
+        mCacheIsDirty = true;
     }
 
     @Override
     public void deleteAllNews() {
+        mNewsRemoteDataSource.deleteAllNews();
+        mNewsLocalDataSource.deleteAllNews();
 
+        if (mCachedNews == null) {
+            mCachedNews = new LinkedHashMap<>();
+        }
+        mCachedNews.clear();
     }
 
     @Override
