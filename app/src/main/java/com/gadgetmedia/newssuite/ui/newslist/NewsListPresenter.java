@@ -114,7 +114,7 @@ final class NewsListPresenter implements NewsListContract.Presenter {
             // Show a message indicating there are no news for now.
             processEmptyNews();
         } else {
-            // Show the list of tasks
+            // Show the list of news
             if (mNewsListView != null) {
                 mNewsListView.showNewsList(newsList);
             }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.gadgetmedia.newssuite.NewsSuiteApp;
+import com.gadgetmedia.newssuite.R;
 import com.gadgetmedia.newssuite.data.db.News;
 import com.gadgetmedia.newssuite.data.db.Title;
 import com.gadgetmedia.newssuite.data.source.NewsDataSource;
@@ -138,9 +139,7 @@ public class NewsListActivityTest {
     public void emptyNewsDetails_DisplayedInUi() throws Exception {
         loadEmptyNewsList();
 
-        // Check that the news title and description are displayed
-        onView(withItemText("Beavers")).check(matches(isDisplayed()));
-        onView(withItemText("Warmer than you might think.")).check(matches(isDisplayed()));
+        onView(withText(R.string.empty_list)).check(matches(isDisplayed()));
     }
 
     private void loadEmptyNewsList() {

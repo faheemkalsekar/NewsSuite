@@ -74,7 +74,7 @@ public class NewsRemoteDataSource implements NewsDataSource {
     @Override
     public void refreshNews() {
         // Not required because the {@link NewsRepository} handles the logic of refreshing the
-        // tasks from all the available data sources.
+        // news from all the available data sources.
     }
 
     @Override

@@ -27,7 +27,7 @@ public class NewsSuiteApp extends DaggerApplication {
 
     /**
      * Our Espresso tests need to be able to get an instance of the {@link NewsRepository}
-     * so that we can delete all tasks before running each test
+     * so that we can delete all news before running each test
      */
     @VisibleForTesting
     public NewsRepository getNewsRepository() {
